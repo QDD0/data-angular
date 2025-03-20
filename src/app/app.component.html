@@ -83,26 +83,21 @@
 </div>
 
 <div class="pagination" *ngIf="users.length > 0">
-  <button (click)="prevPage()" [disabled]="currentPage === 1 || isLoading">
-    Previous
-  </button>
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+  
   <span *ngFor="let page of [].constructor(totalPages); let i = index">
-    <button
-      (click)="goToPage(i + 1)"
+    <button 
+      (click)="goToPage(i + 1)" 
       [class.active]="currentPage === i + 1"
-      [disabled]="isLoading"
     >
       {{ i + 1 }}
     </button>
   </span>
-  <button
-    (click)="nextPage()"
-    [disabled]="currentPage === totalPages || isLoading"
-  >
-    Next
-  </button>
-</div>
+  
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
 
-<div class="page-info">
-  Page {{ currentPage }} of {{ totalPages }} ({{ users.length }} total items)
+  <div class="page-info">
+    Page {{ currentPage }} of {{ totalPages }} 
+    ({{ users.length }} total items)
+  </div>
 </div>

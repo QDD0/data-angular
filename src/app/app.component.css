@@ -1,26 +1,18 @@
 .button-container {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
   margin-top: 2%;
   margin-right: 6%;
   margin-bottom: 3%;
 }
 
-.button-container .btn {
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
+.btn {
+  border-radius: 5%;
+  color: blue;
   padding: 10px 20px;
   border: none;
+  border-radius: 5%;
   cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-  margin-left: 10px;
-}
-
-.button-container .btn:hover {
-  background-color: #0056b3;
 }
 
 th,
