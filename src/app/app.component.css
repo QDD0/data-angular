@@ -1,0 +1,30 @@
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2%;
+  margin-right: 6%;
+  margin-bottom: 3%;
+}
+
+.btn {
+  border-radius: 5%;
+  color: blue;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5%;
+  cursor: pointer;
+}
+
+th,
+td {
+  text-align: center;
+  margin: 5%;
+  padding: 10px;
+  white-space: nowrap;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
