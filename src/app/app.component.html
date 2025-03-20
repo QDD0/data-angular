@@ -2,11 +2,18 @@
   <input
     type="file"
     id="fileInput"
-    style="display: none;"
+    style="display: none"
     (change)="onFileSelected($event)"
     accept=".json"
   />
-  <button class="btn" (click)="openFileDialog()">NEW ENTRY</button>
+  <button class="btn" (click)="openFileDialog()" [disabled]="isLoading">
+    NEW ENTRY
+  </button>
+</div>
+
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>Loading...</p>
 </div>
 
 <table>
@@ -31,27 +38,71 @@
       <td>{{ user.address }}</td>
       <td>{{ user.status }}</td>
       <td>{{ user.data }}</td>
-      <td></td>
+      <td>
+        <button (click)="editUser(user)" [disabled]="isLoading">Edit</button>
+      </td>
     </tr>
   </tbody>
 </table>
 
+<div class="modal" *ngIf="editingUser" (click)="cancelEdit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Edit User</h3>
+    <div>
+      <label>ID: {{ editedUser?.id }}</label>
+    </div>
+    <div>
+      <label>First Name:</label>
+      <input [(ngModel)]="editedUser!.first_name" type="text" />
+    </div>
+    <div>
+      <label>Last Name:</label>
+      <input [(ngModel)]="editedUser!.last_name" type="text" />
+    </div>
+    <div>
+      <label>Email:</label>
+      <input [(ngModel)]="editedUser!.email" type="email" />
+    </div>
+    <div>
+      <label>Address:</label>
+      <input [(ngModel)]="editedUser!.address" type="text" />
+    </div>
+    <div>
+      <label>Status:</label>
+      <input [(ngModel)]="editedUser!.status" type="text" />
+    </div>
+    <div>
+      <label>Date:</label>
+      <input [(ngModel)]="editedUser!.data" type="text" />
+    </div>
+    <div class="form-actions">
+      <button (click)="saveUser()">Save</button>
+      <button (click)="cancelEdit()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="pagination" *ngIf="users.length > 0">
-  <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
-  
+  <button (click)="prevPage()" [disabled]="currentPage === 1 || isLoading">
+    Previous
+  </button>
   <span *ngFor="let page of [].constructor(totalPages); let i = index">
-    <button 
-      (click)="goToPage(i + 1)" 
+    <button
+      (click)="goToPage(i + 1)"
       [class.active]="currentPage === i + 1"
+      [disabled]="isLoading"
     >
       {{ i + 1 }}
     </button>
   </span>
-  
-  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
-  
-  <div class="page-info">
-    Page {{ currentPage }} of {{ totalPages }} 
-    ({{ users.length }} total items)
-  </div>
+  <button
+    (click)="nextPage()"
+    [disabled]="currentPage === totalPages || isLoading"
+  >
+    Next
+  </button>
+</div>
+
+<div class="page-info">
+  Page {{ currentPage }} of {{ totalPages }} ({{ users.length }} total items)
 </div>
