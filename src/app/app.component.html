@@ -1,37 +1,95 @@
-<div class="button-container">
+<!-- <div class="button-container">
   <input
     type="file"
     id="fileInput"
-    style="display: none"
+    style="display: none;"
     (change)="onFileSelected($event)"
+    accept=".json"
   />
   <button class="btn" (click)="openFileDialog()">NEW ENTRY</button>
 </div>
 
 <table>
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.first_name }}</td>
-        <td>{{ user.last_name }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.address }}</td>
-        <td>{{ user.status }}</td>
-        <td>{{ user.data }}</td>
-      </tr> -->
-    </tbody>
-    
-  </table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.address }}</td>
+      <td>{{ user.status }}</td>
+      <td>{{ user.data }}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table> -->
+
+<div class="button-container">
+  <input
+    type="file"
+    id="fileInput"
+    style="display: none;"
+    (change)="onFileSelected($event)"
+    accept=".json"
+  />
+  <button class="btn" (click)="openFileDialog()">NEW ENTRY</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of displayedUsers">
+      <td>{{ user.id }}</td>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.address }}</td>
+      <td>{{ user.status }}</td>
+      <td>{{ user.data }}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="pagination" *ngIf="users.length > 0">
+  <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
   
+  <span *ngFor="let page of [].constructor(totalPages); let i = index">
+    <button 
+      (click)="goToPage(i + 1)" 
+      [class.active]="currentPage === i + 1"
+    >
+      {{ i + 1 }}
+    </button>
+  </span>
+  
+  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  
+  <div class="page-info">
+    Page {{ currentPage }} of {{ totalPages }} 
+    ({{ users.length }} total items)
+  </div>
+</div>
