@@ -26,6 +26,8 @@ export class AppComponent {
   editingUser: User | null = null;
   editedUser: User | null = null;
   isLoading: boolean = false;
+  sortColumn: keyof User | '' = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
 
   get displayedUsers(): User[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -53,7 +55,6 @@ export class AppComponent {
       const files = Array.from(input.files);
       Promise.all(files.map(file => this.readFile(file)))
         .then(() => {
-          // Искусственная задержка 1 секунда для демонстрации индикатора
           setTimeout(() => {
             this.isLoading = false;
           }, 1000);
@@ -71,11 +72,14 @@ export class AppComponent {
       reader.onload = () => {
         try {
           const jsonData = JSON.parse(reader.result as string);
-          if (Array.isArray(jsonData)) {
-            this.users = [...this.users, ...jsonData];
-          } else {
-            this.users.push(jsonData);
-          }
+          const normalizedData = Array.isArray(jsonData) ? jsonData : [jsonData];
+          this.users = [
+            ...this.users,
+            ...normalizedData.map((item: any) => ({
+              ...item,
+              id: Number(item.id) || 0,
+            })),
+          ];
           resolve();
         } catch (error) {
           console.error('Ошибка при парсинге JSON:', error);
@@ -121,5 +125,38 @@ export class AppComponent {
   cancelEdit() {
     this.editingUser = null;
     this.editedUser = null;
+  }
+
+  sortBy(column: keyof User) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+
+    this.users.sort((a, b) => {
+      const valueA = a[column];
+      const valueB = b[column];
+
+      if (column === 'id') {
+        const numA = valueA != null ? Number(valueA) : 0;
+        const numB = valueB != null ? Number(valueB) : 0;
+        return this.sortDirection === 'asc' ? numA - numB : numB - numA;
+      } else if (column === 'data') {
+        
+        const dateA = isNaN(new Date(valueA).getTime()) ? 0 : new Date(valueA).getTime();
+        const dateB = isNaN(new Date(valueB).getTime()) ? 0 : new Date(valueB).getTime();
+        return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+      } else {
+        const strA = valueA != null ? String(valueA).toLowerCase() : '';
+        const strB = valueB != null ? String(valueB).toLowerCase() : '';
+        return this.sortDirection === 'asc'
+          ? strA.localeCompare(strB)
+          : strB.localeCompare(strA);
+      }
+    });
+
+    this.users = [...this.users];
   }
 }

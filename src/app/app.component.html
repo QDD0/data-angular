@@ -19,13 +19,68 @@
 <table>
   <thead>
     <tr>
-      <th>Order ID</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Address</th>
-      <th>Status</th>
-      <th>Date</th>
+      <th (click)="sortBy('id')" [class.sorted]="sortColumn === 'id'">
+        Order ID
+        <span
+          *ngIf="sortColumn === 'id'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th
+        (click)="sortBy('first_name')"
+        [class.sorted]="sortColumn === 'first_name'"
+      >
+        First Name
+        <span
+          *ngIf="sortColumn === 'first_name'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th
+        (click)="sortBy('last_name')"
+        [class.sorted]="sortColumn === 'last_name'"
+      >
+        Last Name
+        <span
+          *ngIf="sortColumn === 'last_name'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th (click)="sortBy('email')" [class.sorted]="sortColumn === 'email'">
+        Email
+        <span
+          *ngIf="sortColumn === 'email'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th (click)="sortBy('address')" [class.sorted]="sortColumn === 'address'">
+        Address
+        <span
+          *ngIf="sortColumn === 'address'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th (click)="sortBy('status')" [class.sorted]="sortColumn === 'status'">
+        Status
+        <span
+          *ngIf="sortColumn === 'status'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
+      <th (click)="sortBy('data')" [class.sorted]="sortColumn === 'data'">
+        Date
+        <span
+          *ngIf="sortColumn === 'data'"
+          [class.asc]="sortDirection === 'asc'"
+          >{{ sortDirection === "asc" ? "↑" : "↓" }}</span
+        >
+      </th>
       <th>Actions</th>
     </tr>
   </thead>
