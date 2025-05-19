@@ -4,7 +4,7 @@ import { User } from './user.model';
 @Injectable({
   providedIn: 'root'
 })
-export class MainService {
+export class UserService {
   readFile(file: File): Promise<User[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

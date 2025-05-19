@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MainService } from './app.main.service';
+import { UserService } from './app.main.service';
+import { SortService } from './sort.component';
 import { User } from './user.model';
 
 @Component({
@@ -21,7 +22,7 @@ export class AppComponent {
   sortColumn: keyof User | '' = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  constructor(private mainService: MainService) {}
+  constructor(private userService: UserService, private sortService: SortService) {}
 
   get displayedUsers(): User[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -47,7 +48,7 @@ export class AppComponent {
       this.editedUser = null;
       this.isLoading = true;
       try {
-        const newUsers = await this.mainService.handleFileSelection(Array.from(input.files));
+        const newUsers = await this.userService.handleFileSelection(Array.from(input.files));
         this.users = [...this.users, ...newUsers];
       } catch (error) {
         console.error('Ошибка при обработке файлов:', error);
@@ -98,28 +99,6 @@ export class AppComponent {
       this.sortColumn = column;
       this.sortDirection = 'asc';
     }
-
-    this.users.sort((a, b) => {
-      const valueA = a[column];
-      const valueB = b[column];
-
-      if (column === 'id') {
-        const numA = valueA != null ? Number(valueA) : 0;
-        const numB = valueB != null ? Number(valueB) : 0;
-        return this.sortDirection === 'asc' ? numA - numB : numB - numA;
-      } else if (column === 'data') {
-        const dateA = isNaN(new Date(valueA).getTime()) ? 0 : new Date(valueA).getTime();
-        const dateB = isNaN(new Date(valueB).getTime()) ? 0 : new Date(valueB).getTime();
-        return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-      } else {
-        const strA = valueA != null ? String(valueA).toLowerCase() : '';
-        const strB = valueB != null ? String(valueB).toLowerCase() : '';
-        return this.sortDirection === 'asc'
-          ? strA.localeCompare(strB)
-          : strB.localeCompare(strA);
-      }
-    });
-
-    this.users = [...this.users];
+    this.users = this.sortService.sortBy(this.users, this.sortColumn, this.sortDirection);
   }
 }
