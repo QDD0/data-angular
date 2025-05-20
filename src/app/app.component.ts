@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from './app.main.service';
-import { SortService } from './sort.component';
+import { SortService } from './sort.service';
 import { User } from './user.model';
 
 @Component({
